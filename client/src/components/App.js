@@ -1,9 +1,11 @@
+
 import React from 'react'
 import { gql } from 'apollo-boost'
 import { Query } from 'react-apollo'
+import { ToDoList } from './toDoList/ToDoList'
 import './App.css'
 
-const GET_MOVIES = gql`
+const TODOS = gql`
 query {
   hello
 }
@@ -11,12 +13,16 @@ query {
 
 export const App = () => {
   return (
-    <Query query={GET_MOVIES}>
-      {({ data }) => {
-        return (
-          <p>{data.hello}</p>
-        )
-      }}
-    </Query>
+    <div className='wrapper'>
+      <div className='header'>
+        <h1>ToDoList</h1>
+      </div>
+      <Query query={TODOS}>
+        {({ data }) => {
+          return <ToDoList data={data} />
+        }}
+      </Query>
+    </div>
+
   )
 }

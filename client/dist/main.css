@@ -1,3 +1,16 @@
+.ToDoList {
+    background-color: aliceblue
+}
 .App {
     background-color: aquamarine;
+}
+
+.wrapper {
+    width: 60%;
+    margin: 0px auto;
+}
+
+.header {
+    background-color: aqua
+
 }
