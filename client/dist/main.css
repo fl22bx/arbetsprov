@@ -1,6 +1,11 @@
 .ToDoList {
     background-color: aliceblue
 }
+
+h1 {
+display: inline-block;
+}
+
 .App {
     background-color: aquamarine;
 }

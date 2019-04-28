@@ -1,26 +1,93 @@
 import React from 'react'
-import './ToDoList.css'
-export const ToDoList = (props) => (
-  <div className='ToDoList'>
-    <div>ToDoList</div>
-    <p>{props.data.hello}</p>
-    <div>
-      <p>Lorem Ipsum</p>
-      <p>Lorem Ipsum</p>
-      <p>Lorem Ipsum</p>
-      <p>Lorem Ipsum</p>
-      <p>Lorem Ipsum</p>
-      <p>Lorem Ipsum</p>
-      <p>Lorem Ipsum</p>
-      <p>Lorem Ipsum</p>
-      <p>Lorem Ipsum</p>
-      <p>Lorem Ipsum</p>
+import { IconButton, ListItem, List, ListItemText, ListItemSecondaryAction } from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete'
+import AddIcon from '@material-ui/icons/Add'
+import EditIcon from '@material-ui/icons/Edit'
+import CheckIcon from '@material-ui/icons/Check'
+import { withStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Badge from '@material-ui/core/Badge'
 
-      <p>Lorem Ipsum</p>
-      <p>Lorem Ipsum</p>
-      <p>Lorem Ipsum</p>
-      <p>Lorem Ipsum</p>
-      <p>Lorem Ipsum</p>
+import './ToDoList.css'
+
+const styles = () => ({
+  todoHeader: {
+    padding: '5px'
+  },
+  grow: {
+    flexGrow: 1
+  },
+  delete: {
+    color: 'red'
+  },
+  edit: {
+    color: 'blue'
+  },
+  complete: {
+    color: 'green'
+  }
+})
+
+export const ToDoList = withStyles(styles)((props) => {
+  function toDods () {
+    return ['todo1', 'todo2', 'todo3'].map(value => (
+      <ListItem>
+        <ListItemText
+          primary={value}
+          secondary='undertext'
+        />
+        <ListItemSecondaryAction>
+          <IconButton aria-label='Delete'>
+            <CheckIcon className={props.classes.complete} />
+          </IconButton>
+          <IconButton aria-label='Delete'>
+            <EditIcon className={props.classes.edit} />
+          </IconButton>
+          <IconButton aria-label='Delete'>
+            <DeleteIcon className={props.classes.delete} />
+          </IconButton>
+        </ListItemSecondaryAction>
+      </ListItem>
+    )
+    )
+  }
+
+  // todo:
+  // for each data make list
+  // map if completed or not
+
+  return (
+    <div className='ToDoList'>
+      <div>ToDoList</div>
+      <p>{props.data.hello}</p>
+      <AppBar position='static'>
+
+        <Toolbar>
+          <span className={props.classes.grow}>
+            <Badge className={props.classes.todoHeader} color='secondary' badgeContent={4}>
+               Tasks
+            </Badge>
+          </span>
+
+          <IconButton aria-label='Add'>
+            <AddIcon />
+          </IconButton>
+
+        </Toolbar>
+      </AppBar>
+
+      <List dense>
+        {toDods()}
+      </List>
+
+      <div>
+        <h1>Completed Tasks</h1>
+        <List dense>
+          {toDods()}
+        </List>
+
+      </div>
     </div>
-  </div>
-)
+  )
+})

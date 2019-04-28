@@ -18,7 +18,9 @@ export const App = () => {
         <h1>ToDoList</h1>
       </div>
       <Query query={TODOS}>
-        {({ data }) => {
+        {({ loading, data }) => {
+          if (loading) return 'Loading...'
+
           return <ToDoList data={data} />
         }}
       </Query>

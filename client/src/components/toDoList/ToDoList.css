@@ -1,3 +1,7 @@
 .ToDoList {
     background-color: aliceblue
 }
+
+h1 {
+display: inline-block;
+}
