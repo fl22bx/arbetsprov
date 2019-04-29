@@ -25,6 +25,7 @@ const resolvers = {
   },
   Mutation: {
     addToDo: (parent, { Arguments }) => new ToDo({ ...Arguments }).save()
+
   }
 }
 module.exports = {

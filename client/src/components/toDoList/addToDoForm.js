@@ -9,23 +9,31 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 
 const AddTodo = gql`
-  query here
+mutation ($todoName: String, $todoDescription: String){
+  addToDo(Arguments:{toDoName: $todoName, toDoDescription:$todoDescription}){
+    _id
+    toDoName
+    toDoDescription
+  }
+}
 `
 
 export const AddForm = (props) => {
   const { open, setOpen } = props
-  const [ todoName, setTodoName ] = useState('hej')
-  const [ todoDescription, setTodoDescription ] = useState('hej')
+  const [ todoName, setTodoName ] = useState('')
+  const [ todoDescription, setTodoDescription ] = useState('')
 
-  const save = (event) => {
-    console.log(event)
-  }
   return (
 
     <Dialog open={open}>
 
-      <Mutation mutation={AddTodo}>
-        {(add, { data }) => (
+      <Mutation
+        mutation={AddTodo}
+        onCompleted={({ addToDo }) => {
+          // add to list
+          console.log(addToDo)
+        }}>
+        {(add) => (
           <div className={'formModal'}>
             <FormControl fullWidth='true' className={'formControll'}>
               <InputLabel htmlFor='todoName'>ToDO Name</InputLabel>
@@ -40,11 +48,15 @@ export const AddForm = (props) => {
               <FormHelperText id='component-helper-text'>Some important helper text</FormHelperText>
             </FormControl>
 
-            <Button onClick={save} >
-                        Save
+            <Button onClick={() => {
+              add({ variables: { todoName, todoDescription } })
+              setTodoName('')
+              setTodoDescription('')
+            }} >
+              Save
             </Button>
             <Button onClick={() => setOpen(false)}>
-                        Close
+             Close
             </Button>
           </div>
         )
