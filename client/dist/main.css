@@ -43,6 +43,10 @@ font-size: 15
 .add {
 background-color: green !important
 }
+
+.add:hover {
+    background-color: black !important
+}
 .App {
     background-color: aquamarine;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
 import { Mutation } from 'react-apollo'
@@ -9,8 +9,8 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 
 const AddTodo = gql`
-mutation ($todoName: String, $todoDescription: String){
-  addToDo(Arguments:{toDoName: $todoName, toDoDescription:$todoDescription}){
+mutation ($todoName: String, $todoDescription: String, $id: String){
+  addToDo(Arguments:{toDoName: $todoName, toDoDescription:$todoDescription, id: $id}){
     _id
     toDoName
     toDoDescription
@@ -20,9 +20,19 @@ mutation ($todoName: String, $todoDescription: String){
 
 export const AddForm = (props) => {
   const { open, setOpen } = props
+  const { chosenTodDo, setChosenTodDo } = props
   const [ todoName, setTodoName ] = useState('')
   const [ todoDescription, setTodoDescription ] = useState('')
+  const [ id, setId ] = useState(null)
 
+  useEffect(() => {
+    if (chosenTodDo) {
+      setTodoName(chosenTodDo.toDoName)
+      setTodoDescription(chosenTodDo.toDoDescription)
+      setId(chosenTodDo._id)
+      setChosenTodDo(null)
+    }
+  })
   return (
 
     <Dialog open={open}>
@@ -30,11 +40,10 @@ export const AddForm = (props) => {
       <Mutation
         mutation={AddTodo}
         onCompleted={({ addToDo }) => {
-          // add to list
-          console.log(addToDo)
+          props.changeTodoList(addToDo)
         }}>
         {(add) => (
-          <div className={'formModal'}>
+          <div className={'formModal'} >
             <FormControl fullWidth='true' className={'formControll'}>
               <InputLabel htmlFor='todoName'>ToDO Name</InputLabel>
               <Input id='todoName' value={todoName} onChange={(event) => setTodoName(event.target.value)} />
@@ -49,9 +58,11 @@ export const AddForm = (props) => {
             </FormControl>
 
             <Button onClick={() => {
-              add({ variables: { todoName, todoDescription } })
+              add({ variables: { todoName, todoDescription, id } })
               setTodoName('')
               setTodoDescription('')
+              setId(null)
+              setOpen(false)
             }} >
               Save
             </Button>

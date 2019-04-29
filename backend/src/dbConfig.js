@@ -12,7 +12,8 @@ const Initialize = () => {
 
 const toDoSchema = new Schema({
   toDoName: String,
-  toDoDescription: String
+  toDoDescription: String,
+  completed: Boolean
 
 })
 const ToDo = mongoose.model('ToDo', toDoSchema)
