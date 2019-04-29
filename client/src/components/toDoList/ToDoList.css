@@ -1,7 +1,45 @@
 .ToDoList {
-    background-color: aliceblue
+background-color: aliceblue
 }
 
 h1 {
 display: inline-block;
+}
+
+.formControll {
+margin-bottom: 25px !important
+}
+
+.formModal {
+padding: 30px !important
+}
+
+.todoHeader {
+padding: 5px
+}
+
+.grow {
+flex-grow: 1
+}
+.delete {
+color: 830a0a
+}
+.edit {
+color: blue
+}
+.complete {
+color: green
+}
+.todos {
+background-color: red !important
+}
+.completedTodos {
+background-color: green !important
+}
+.addIcon {
+color: white;
+font-size: 15
+}
+.add {
+background-color: green !important
 }

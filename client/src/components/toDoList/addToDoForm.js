@@ -1,24 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
 
+import FormControl from '@material-ui/core/FormControl'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
+
 export const AddForm = (props) => {
   const { open, setOpen } = props
+  const [ todoName, setTodoName ] = useState('hej')
+  const [ todoDescription, setTodoDescription ] = useState('hej')
 
   return (
     <Dialog open={open}>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel felis sagittis,
-    tempor magna sit amet, porttitor est. Nullam purus dolor, tempus pellentesque ligula fermentum,
-    ullamcorper cursus lectus. Morbi rhoncus ultrices eros, nec tincidunt nulla convallis vel. Etiam et
-    lorem eget dolor blandit porttitor. Etiam ultrices fringilla lorem at venenatis. Proin vel sagittis sapien.
-     Maecenas eget neque nec lorem congue scelerisque. Integer nec enim et lacus cursus pharetra id vitae purus.
-     Morbi rhoncus vestibulum dignissim. Vestibulum elementum blandit ipsum, id congue libero.
-      <Button >
+      <div className={'formModal'}>
+        <FormControl fullWidth='true' className={'formControll'}>
+          <InputLabel htmlFor='todoName'>ToDO Name</InputLabel>
+          <Input id='todoName' value={todoName} onChange={(event) => setTodoName(event.target.value)} />
+
+          <FormHelperText id='component-helper-text'>Some important helper text</FormHelperText>
+        </FormControl>
+        <FormControl fullWidth='true' className={'formControll'}>
+          <InputLabel htmlFor='todoDescription'>ToDO Description</InputLabel>
+          <Input id='todoDescription' value={todoDescription} onChange={(event) => setTodoDescription(event.target.value)} />
+
+          <FormHelperText id='component-helper-text'>Some important helper text</FormHelperText>
+        </FormControl>
+
+        <Button >
               Save
-      </Button>
-      <Button onClick={() => setOpen(false)}>
+        </Button>
+        <Button onClick={() => setOpen(false)}>
               Close
-      </Button>
+        </Button>
+      </div>
     </Dialog>
   )
 }

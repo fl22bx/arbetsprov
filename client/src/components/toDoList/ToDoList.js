@@ -20,17 +20,31 @@ const styles = () => ({
     flexGrow: 1
   },
   delete: {
-    color: 'red'
+    color: '830a0a'
   },
   edit: {
     color: 'blue'
   },
   complete: {
     color: 'green'
+  },
+  todos: {
+    backgroundColor: 'red'
+  },
+  completedTodos: {
+    backgroundColor: 'green'
+  },
+  addIcon: {
+    color: 'white',
+    fontSize: 15
+  },
+  add: {
+    backgroundColor: 'green'
+
   }
 })
 
-export const ToDoList = withStyles(styles)((props) => {
+export const ToDoList = (props) => {
   const [open, setOpen] = useState(false)
 
   function toDods () {
@@ -41,14 +55,14 @@ export const ToDoList = withStyles(styles)((props) => {
           secondary='undertext'
         />
         <ListItemSecondaryAction>
-          <IconButton aria-label='Delete'>
-            <CheckIcon className={props.classes.complete} />
+          <IconButton >
+            <CheckIcon className={'complete'} />
           </IconButton>
-          <IconButton aria-label='Delete'>
-            <EditIcon className={props.classes.edit} />
+          <IconButton >
+            <EditIcon className={'edit'} />
           </IconButton>
-          <IconButton aria-label='Delete'>
-            <DeleteIcon className={props.classes.delete} />
+          <IconButton >
+            <DeleteIcon className={'delete'} />
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
@@ -62,20 +76,17 @@ export const ToDoList = withStyles(styles)((props) => {
   return (
     <div className='ToDoList'>
       <AddForm setOpen={setOpen} open={open} />
-      <div>ToDoList</div>
       <p>{props.data.hello}</p>
-
       <AppBar position='static'>
-
-        <Toolbar>
-          <span className={props.classes.grow}>
-            <Badge className={props.classes.todoHeader} color='secondary' badgeContent={4}>
+        <Toolbar className={'todos'}>
+          <span className={'grow'}>
+            <Badge className={'todoHeader'} color='primary' badgeContent={4}>
                Tasks
             </Badge>
           </span>
 
-          <IconButton aria-label='Add' onClick={openModal}>
-            <AddIcon />
+          <IconButton aria-label='Add' onClick={openModal} className={'add'}>
+            <AddIcon className={'addIcon'} />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -84,7 +95,12 @@ export const ToDoList = withStyles(styles)((props) => {
       </List>
 
       <div>
-        <h1>Completed Tasks</h1>
+        <Toolbar className={'completedTodos'}>
+
+          <Badge className={'todoHeader'} color='primary' badgeContent={4}>
+               Tasks
+          </Badge>
+        </Toolbar>
         <List dense>
           {toDods()}
         </List>
@@ -92,4 +108,4 @@ export const ToDoList = withStyles(styles)((props) => {
       </div>
     </div>
   )
-})
+}
