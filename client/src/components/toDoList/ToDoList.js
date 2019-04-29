@@ -4,45 +4,12 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
 import CheckIcon from '@material-ui/icons/Check'
-import { withStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Badge from '@material-ui/core/Badge'
 import { AddForm } from './addToDoForm'
 
 import './ToDoList.css'
-
-const styles = () => ({
-  todoHeader: {
-    padding: '5px'
-  },
-  grow: {
-    flexGrow: 1
-  },
-  delete: {
-    color: '830a0a'
-  },
-  edit: {
-    color: 'blue'
-  },
-  complete: {
-    color: 'green'
-  },
-  todos: {
-    backgroundColor: 'red'
-  },
-  completedTodos: {
-    backgroundColor: 'green'
-  },
-  addIcon: {
-    color: 'white',
-    fontSize: 15
-  },
-  add: {
-    backgroundColor: 'green'
-
-  }
-})
 
 export const ToDoList = (props) => {
   const [open, setOpen] = useState(false)

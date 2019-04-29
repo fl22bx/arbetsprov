@@ -1,40 +1,57 @@
 import React, { useState } from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
-
+import { Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
+
+const AddTodo = gql`
+  query here
+`
 
 export const AddForm = (props) => {
   const { open, setOpen } = props
   const [ todoName, setTodoName ] = useState('hej')
   const [ todoDescription, setTodoDescription ] = useState('hej')
 
+  const save = (event) => {
+    console.log(event)
+  }
   return (
+
     <Dialog open={open}>
-      <div className={'formModal'}>
-        <FormControl fullWidth='true' className={'formControll'}>
-          <InputLabel htmlFor='todoName'>ToDO Name</InputLabel>
-          <Input id='todoName' value={todoName} onChange={(event) => setTodoName(event.target.value)} />
 
-          <FormHelperText id='component-helper-text'>Some important helper text</FormHelperText>
-        </FormControl>
-        <FormControl fullWidth='true' className={'formControll'}>
-          <InputLabel htmlFor='todoDescription'>ToDO Description</InputLabel>
-          <Input id='todoDescription' value={todoDescription} onChange={(event) => setTodoDescription(event.target.value)} />
+      <Mutation mutation={AddTodo}>
+        {(add, { data }) => (
+          <div className={'formModal'}>
+            <FormControl fullWidth='true' className={'formControll'}>
+              <InputLabel htmlFor='todoName'>ToDO Name</InputLabel>
+              <Input id='todoName' value={todoName} onChange={(event) => setTodoName(event.target.value)} />
 
-          <FormHelperText id='component-helper-text'>Some important helper text</FormHelperText>
-        </FormControl>
+              <FormHelperText id='component-helper-text'>Some important helper text</FormHelperText>
+            </FormControl>
+            <FormControl fullWidth='true' className={'formControll'}>
+              <InputLabel htmlFor='todoDescription'>ToDO Description</InputLabel>
+              <Input id='todoDescription' value={todoDescription} onChange={(event) => setTodoDescription(event.target.value)} />
 
-        <Button >
-              Save
-        </Button>
-        <Button onClick={() => setOpen(false)}>
-              Close
-        </Button>
-      </div>
+              <FormHelperText id='component-helper-text'>Some important helper text</FormHelperText>
+            </FormControl>
+
+            <Button onClick={save} >
+                        Save
+            </Button>
+            <Button onClick={() => setOpen(false)}>
+                        Close
+            </Button>
+          </div>
+        )
+        }
+
+      </Mutation>
+
     </Dialog>
   )
 }
