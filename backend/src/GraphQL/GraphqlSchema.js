@@ -1,6 +1,8 @@
 const { ToDo } = require('../dbConfig')
 const { gql } = require('apollo-server-express')
 
+// Graph QL Mutations and Querys Schema
+//
 const typeDefs = gql`
 type Query {
   todos: [toDo]
@@ -26,7 +28,9 @@ type Mutation {
   deleteToDo(id: String): toDo
 }
 `
-
+// Graph QL Resolvers:
+// Resolve Graph Ql Querys and Mutations
+//
 const resolvers = {
   Query: {
     todos: () => ToDo.find({})
@@ -35,7 +39,6 @@ const resolvers = {
     addToDo: async (parent, { Arguments }) => {
       if (Arguments.id) {
         const doc = await ToDo.findOne({ _id: Arguments.id })
-        console.log(doc)
         doc.toDoName = Arguments.toDoName
         doc.toDoDescription = Arguments.toDoDescription
         return doc.save()
