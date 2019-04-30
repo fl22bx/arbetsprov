@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { IconButton, ListItem, List, ListItemText, ListItemSecondaryAction } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import AddIcon from '@material-ui/icons/Add'
@@ -37,21 +37,28 @@ export const ToDoList = (props) => {
   `
 
   const changeTodoList = (todo) => {
-    const ToDOindex = _.findIndex(todos, { _id: todo._id })
-    if (ToDOindex >= 0) {
-      todos[ToDOindex] = todo
-      setTodos([...todos])
+    const todosIndex = _.findIndex(todos, { _id: todo._id })
+    const completedTodosIndex = _.findIndex(completedTodos, { _id: todo._id })
+    if (todosIndex >= 0) {
+      todos[todosIndex] = todo
+      return setTodos([...todos])
+    } else if (completedTodosIndex >= 0) {
+      completedTodos[completedTodosIndex] = todo
+      return setCompletedTodos([...completedTodos])
     } else {
-      setTodos([...todos, todo])
+      return setTodos([...todos, todo])
     }
   }
 
   const markAsCompleteList = (id, completed) => {
+    console.log(id)
+    console.log(completed)
     if (completed) {
       const todo = _.remove(todos, { _id: id })
       setCompletedTodos([...completedTodos, ...todo])
     } else {
       const todo = _.remove(completedTodos, { _id: id })
+      console.log(todo)
       setTodos([...todos, ...todo])
     }
   }
@@ -63,12 +70,12 @@ export const ToDoList = (props) => {
       setTodos([...todos])
     } else {
       const todoIndex = _.findIndex(completedTodos, { _id: id })
-      todos.splice(todoIndex, completedTodos, 1)
-      setCompletedTodos([...todos])
+      completedTodos.splice(todoIndex, 1)
+      setCompletedTodos([...completedTodos])
     }
   }
 
-  function toDods (array) {
+  function toDods (array, markBool) {
     return array.map(value => (
       <ListItem>
         <ListItemText
@@ -86,7 +93,7 @@ export const ToDoList = (props) => {
               <IconButton id={value._id} onClick={
                 (event) => {
                   const id = event.currentTarget.getAttribute('id')
-                  mark({ variables: { completed: true, Id: id } })
+                  mark({ variables: { completed: markBool, Id: id } })
                 }
               }
               >
@@ -121,44 +128,11 @@ export const ToDoList = (props) => {
     )
   }
 
-  function completedTasks (array) {
-    return array.map(value => (
-      <ListItem>
-        <ListItemText
-          primary={value.toDoName}
-          secondary={value.toDoDescription}
-        />
-        <ListItemSecondaryAction>
-          <Mutation mutation={markAsComplete}
-            onCompleted={({ markAsComplete }) => {
-              markAsCompleteList(markAsComplete._id, markAsComplete.completed)
-            }
-            }>
-            {(mark) => (
-              <IconButton id={value._id} onClick={
-                (event) => {
-                  const id = event.currentTarget.getAttribute('id')
-                  mark({ variables: { completed: false, Id: id } })
-                }
-              }
-              >
-                <CheckIcon className={'complete'} />
-              </IconButton>
-            )
-            }
-
-          </Mutation>
-          <IconButton >
-            <DeleteIcon className={'delete'} />
-          </IconButton>
-        </ListItemSecondaryAction>
-      </ListItem>
-    )
-    )
-  }
   const edit = (event) => {
     const id = event.currentTarget.getAttribute('id')
     let currentTodo = _.find(todos, { _id: id })
+    console.log(currentTodo)
+    if (!currentTodo) { currentTodo = _.find(completedTodos, { _id: id }) }
     setOpen(true)
     setChosenTodDo(currentTodo)
   }
@@ -184,7 +158,7 @@ export const ToDoList = (props) => {
         </Toolbar>
       </AppBar>
       <List dense>
-        {toDods(todos)}
+        {toDods(todos, true)}
       </List>
 
       <div>
@@ -195,7 +169,7 @@ export const ToDoList = (props) => {
           </Badge>
         </Toolbar>
         <List dense>
-          {completedTasks(completedTodos)}
+          {toDods(completedTodos, false)}
         </List>
 
       </div>
