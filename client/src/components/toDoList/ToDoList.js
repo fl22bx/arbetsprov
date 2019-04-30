@@ -9,6 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Badge from '@material-ui/core/Badge'
 import { AddForm } from './addToDoForm'
 import { Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
 import _ from 'lodash'
 import './ToDoList.css'
 
@@ -17,6 +18,15 @@ export const ToDoList = (props) => {
   const [chosenTodDo, setChosenTodDo] = useState(null)
   const [todos, setTodos] = useState(props.todos)
   const [completedTodos, setCompletedTodos] = useState(props.completedToDos)
+
+  const markAsComplete = gql`
+  mutation ($completed: Boolean, $Id: String){
+    markAsComplete(Arguments:{completed: $completed, id:$Id}){
+      _id
+      completed
+    }
+  }
+  `
 
   const changeTodoList = (todo) => {
     const ToDOindex = _.findIndex(todos, { _id: todo._id })
@@ -28,6 +38,18 @@ export const ToDoList = (props) => {
     }
   }
 
+  const markAsCompleteList = (id, completed) => {
+    console.log('comp')
+    if (completed) {
+      const todo = _.remove(todos, { _id: id })
+      setCompletedTodos([...completedTodos, ...todo])
+    } else {
+      const todo = _.remove(completedTodos, { _id: id })
+      console.log(todo)
+      setTodos([...todos, ...todo])
+    }
+  }
+
   function toDods (array) {
     return array.map(value => (
       <ListItem>
@@ -36,18 +58,65 @@ export const ToDoList = (props) => {
           secondary={value.toDoDescription}
         />
         <ListItemSecondaryAction>
-          <Mutation
-            mutation={AddTodo}
-            onCompleted={({ addToDo }) => {
-              props.changeTodoList(addToDo)
-            }}>
-            <IconButton >
-              <CheckIcon className={'complete'} />
-            </IconButton>
+          <Mutation mutation={markAsComplete}
+            onCompleted={({ markAsComplete }) => {
+              markAsCompleteList(markAsComplete._id, markAsComplete.completed)
+            }
+            }>
+
+            {(mark) => (
+              <IconButton id={value._id} onClick={
+                (event) => {
+                  const id = event.currentTarget.getAttribute('id')
+                  mark({ variables: { completed: true, Id: id } })
+                }
+              }
+              >
+                <CheckIcon className={'complete'} />
+              </IconButton>
+            )
+            }
+
           </Mutation>
           <IconButton id={value._id} onClick={edit} >
             <EditIcon id={value._id} className={'edit'} />
           </IconButton>
+          <IconButton >
+            <DeleteIcon className={'delete'} />
+          </IconButton>
+        </ListItemSecondaryAction>
+      </ListItem>
+    )
+    )
+  }
+
+  function completedTasks (array) {
+    return array.map(value => (
+      <ListItem>
+        <ListItemText
+          primary={value.toDoName}
+          secondary={value.toDoDescription}
+        />
+        <ListItemSecondaryAction>
+          <Mutation mutation={markAsComplete}
+            onCompleted={({ markAsComplete }) => {
+              markAsCompleteList(markAsComplete._id, markAsComplete.completed)
+            }
+            }>
+            {(mark) => (
+              <IconButton id={value._id} onClick={
+                (event) => {
+                  const id = event.currentTarget.getAttribute('id')
+                  mark({ variables: { completed: false, Id: id } })
+                }
+              }
+              >
+                <CheckIcon className={'complete'} />
+              </IconButton>
+            )
+            }
+
+          </Mutation>
           <IconButton >
             <DeleteIcon className={'delete'} />
           </IconButton>
@@ -94,7 +163,9 @@ export const ToDoList = (props) => {
                Tasks
           </Badge>
         </Toolbar>
-        <List dense />
+        <List dense>
+          {completedTasks(completedTodos)}
+        </List>
 
       </div>
     </div>

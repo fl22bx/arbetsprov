@@ -66,7 +66,11 @@ export const AddForm = (props) => {
             }} >
               Save
             </Button>
-            <Button onClick={() => setOpen(false)}>
+            <Button onClick={() => {
+              setId(null)
+              setChosenTodDo(null)
+              setOpen(false)
+            }}>
              Close
             </Button>
           </div>

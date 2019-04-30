@@ -16,8 +16,14 @@ input ToDoInput {
   toDoDescription: String
   id: String
 }
+input mark {
+  completed: Boolean
+  id: String
+}
 type Mutation {
   addToDo(Arguments: ToDoInput): toDo
+  markAsComplete(Arguments: mark): toDo
+  deleteToDo(id: String): toDo
 }
 `
 
@@ -35,6 +41,14 @@ const resolvers = {
         return doc.save()
       }
       return new ToDo({ completed: false, ...Arguments }).save()
+    },
+    markAsComplete: async (parent, { Arguments }) => {
+      const doc = await ToDo.findOne({ _id: Arguments.id })
+      doc.completed = Arguments.completed
+      return doc.save()
+    },
+    deleteToDo: async (parent, { id }) => {
+      console.log(id)
     }
 
   }
