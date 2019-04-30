@@ -1,7 +1,7 @@
 # Arbetsprov
 
 Github:
-https://github.com/fl22bx/arbetsprov/settings
+https://github.com/fl22bx/arbetsprov
 
 ## Förkrav
 * Internet Anslutning för att kommunicera med M-Lab Mongo DB service
