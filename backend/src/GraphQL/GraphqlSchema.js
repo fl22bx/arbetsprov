@@ -48,7 +48,8 @@ const resolvers = {
       return doc.save()
     },
     deleteToDo: async (parent, { id }) => {
-      console.log(id)
+      const doc = await ToDo.findOneAndDelete({ _id: id })
+      return doc
     }
 
   }

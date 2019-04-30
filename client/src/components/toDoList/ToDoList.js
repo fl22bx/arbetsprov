@@ -27,6 +27,14 @@ export const ToDoList = (props) => {
     }
   }
   `
+  const deleteToDo = gql`
+  mutation ($Id: String){
+    deleteToDo(id: $Id ) {
+      _id
+      completed
+    }
+  }
+  `
 
   const changeTodoList = (todo) => {
     const ToDOindex = _.findIndex(todos, { _id: todo._id })
@@ -39,14 +47,24 @@ export const ToDoList = (props) => {
   }
 
   const markAsCompleteList = (id, completed) => {
-    console.log('comp')
     if (completed) {
       const todo = _.remove(todos, { _id: id })
       setCompletedTodos([...completedTodos, ...todo])
     } else {
       const todo = _.remove(completedTodos, { _id: id })
-      console.log(todo)
       setTodos([...todos, ...todo])
+    }
+  }
+
+  const removeToDoFromList = (id, completed) => {
+    if (!completed) {
+      const todoIndex = _.findIndex(todos, { _id: id })
+      todos.splice(todoIndex, 1)
+      setTodos([...todos])
+    } else {
+      const todoIndex = _.findIndex(completedTodos, { _id: id })
+      todos.splice(todoIndex, completedTodos, 1)
+      setCompletedTodos([...todos])
     }
   }
 
@@ -81,9 +99,22 @@ export const ToDoList = (props) => {
           <IconButton id={value._id} onClick={edit} >
             <EditIcon id={value._id} className={'edit'} />
           </IconButton>
-          <IconButton >
-            <DeleteIcon className={'delete'} />
-          </IconButton>
+          <Mutation mutation={deleteToDo}
+            onCompleted={({ deleteToDo }) => {
+              removeToDoFromList(deleteToDo._id, deleteToDo.completed)
+            }
+            }>
+            {(deleteToDo) => (
+              <IconButton id={value._id} onClick={
+                (event) => {
+                  const id = event.currentTarget.getAttribute('id')
+                  deleteToDo({ variables: { Id: id } })
+                }
+              }>
+                <DeleteIcon className={'delete'} />
+              </IconButton>
+            )}
+          </Mutation>
         </ListItemSecondaryAction>
       </ListItem>
     )
@@ -127,7 +158,7 @@ export const ToDoList = (props) => {
   }
   const edit = (event) => {
     const id = event.currentTarget.getAttribute('id')
-    const currentTodo = _.find(todos, { _id: id })
+    let currentTodo = _.find(todos, { _id: id })
     setOpen(true)
     setChosenTodDo(currentTodo)
   }
