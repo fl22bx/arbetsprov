@@ -4,6 +4,12 @@ background-color: aliceblue
 
 h1 {
 display: inline-block;
+font-size: 60px;
+color: rgb(73, 45, 105);
+font-weight: bold;
+text-shadow: 2px 1px #2c0542;
+margin: 0px;
+padding: 0px;
 }
 
 .formControll {
@@ -15,7 +21,9 @@ padding: 30px !important
 }
 
 .todoHeader {
-padding: 5px
+padding-right: 5px;
+color: white;
+font-size: 30px;
 }
 
 .grow {
@@ -31,10 +39,10 @@ color: blue
 color: green
 }
 .todos {
-background-color: red !important
+background-color: rgb(71, 5, 5) !important
 }
 .completedTodos {
-background-color: green !important
+background-color: rgb(4, 59, 18) !important
 }
 .addIcon {
 color: white;
@@ -47,3 +55,8 @@ background-color: green !important
 .add:hover {
     background-color: black !important
 }
+
+.tasks {
+    min-height: 300px
+}
+

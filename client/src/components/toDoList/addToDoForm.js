@@ -45,16 +45,14 @@ export const AddForm = (props) => {
         {(add) => (
           <div className={'formModal'} >
             <FormControl fullWidth='true' className={'formControll'}>
-              <InputLabel htmlFor='todoName'>ToDO Name</InputLabel>
+              <InputLabel htmlFor='todoName'>ToDo Namn</InputLabel>
               <Input id='todoName' value={todoName} onChange={(event) => setTodoName(event.target.value)} />
-
-              <FormHelperText id='component-helper-text'>Some important helper text</FormHelperText>
+              <FormHelperText id='component-helper-text'>Uppgiftens Namn</FormHelperText>
             </FormControl>
             <FormControl fullWidth='true' className={'formControll'}>
-              <InputLabel htmlFor='todoDescription'>ToDO Description</InputLabel>
+              <InputLabel htmlFor='todoDescription'>ToDO Beskrivning</InputLabel>
               <Input id='todoDescription' value={todoDescription} onChange={(event) => setTodoDescription(event.target.value)} />
-
-              <FormHelperText id='component-helper-text'>Some important helper text</FormHelperText>
+              <FormHelperText id='component-helper-text'>Uppgiftens Beskrivning</FormHelperText>
             </FormControl>
 
             <Button onClick={() => {

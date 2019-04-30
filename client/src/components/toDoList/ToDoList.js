@@ -75,6 +75,19 @@ export const ToDoList = (props) => {
     }
   }
 
+  const edit = (event) => {
+    const id = event.currentTarget.getAttribute('id')
+    let currentTodo = _.find(todos, { _id: id })
+    console.log(currentTodo)
+    if (!currentTodo) { currentTodo = _.find(completedTodos, { _id: id }) }
+    setOpen(true)
+    setChosenTodDo(currentTodo)
+  }
+  const openModal = () => {
+    console.log(todos)
+    setOpen(true)
+  }
+
   function toDods (array, markBool) {
     return array.map(value => (
       <ListItem>
@@ -128,44 +141,32 @@ export const ToDoList = (props) => {
     )
   }
 
-  const edit = (event) => {
-    const id = event.currentTarget.getAttribute('id')
-    let currentTodo = _.find(todos, { _id: id })
-    console.log(currentTodo)
-    if (!currentTodo) { currentTodo = _.find(completedTodos, { _id: id }) }
-    setOpen(true)
-    setChosenTodDo(currentTodo)
-  }
-  const openModal = () => {
-    console.log(todos)
-    setOpen(true)
-  }
-
   return (
     <div className='ToDoList'>
-      <AddForm setOpen={setOpen} open={open} chosenTodDo={chosenTodDo} setChosenTodDo={setChosenTodDo} changeTodoList={changeTodoList} />
-      <AppBar position='static'>
-        <Toolbar className={'todos'}>
-          <span className={'grow'}>
-            <Badge className={'todoHeader'} color='primary' badgeContent={todos.length}>
-               Tasks
-            </Badge>
-          </span>
+      <div className='tasks'>
+        <AddForm setOpen={setOpen} open={open} chosenTodDo={chosenTodDo} setChosenTodDo={setChosenTodDo} changeTodoList={changeTodoList} />
+        <AppBar position='static'>
+          <Toolbar className={'todos'}>
+            <span className={'grow'}>
+              <Badge className={'todoHeader'} color='primary' badgeContent={todos.length}>
+              Uppgifter
+              </Badge>
+            </span>
 
-          <IconButton onClick={openModal} className={'add'}>
-            <AddIcon className={'addIcon'} />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <List dense>
-        {toDods(todos, true)}
-      </List>
-
-      <div>
+            <IconButton onClick={openModal} className={'add'}>
+              <AddIcon className={'addIcon'} />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <List dense>
+          {toDods(todos, true)}
+        </List>
+      </div>
+      <div className='tasks'>
         <Toolbar className={'completedTodos'}>
 
           <Badge className={'todoHeader'} color='primary' badgeContent={completedTodos.length}>
-               Tasks
+             Avklarade Uppgifter
           </Badge>
         </Toolbar>
         <List dense>
